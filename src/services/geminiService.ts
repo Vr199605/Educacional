@@ -1,18 +1,11 @@
 import { Activity, ActivityType, DifficultyLevel } from '../types/activity';
-import { getStoredApiKey } from './activityStore';
 import { generateTemplateActivity, GenerationParams } from './templateGenerator';
 
-export async function generateActivityWithAI(params: GenerationParams): Promise<Partial<Activity>> {
-  const apiKey =
-    getStoredApiKey() ||
-    (import.meta.env.VITE_GEMINI_API_KEY as string) ||
-    '';
+// Lê a chave fixa configurada no arquivo local .env (protegido pelo .gitignore)
+const FIXED_GEMINI_KEY = (import.meta.env.VITE_GEMINI_API_KEY as string) || '';
 
-  // If no API key configured, use high-fidelity pedagogical template generator
-  if (!apiKey) {
-    await new Promise((r) => setTimeout(r, 800));
-    return generateTemplateActivity(params);
-  }
+export async function generateActivityWithAI(params: GenerationParams): Promise<Partial<Activity>> {
+  const apiKey = FIXED_GEMINI_KEY;
 
   const prompt = buildGeminiPrompt(params);
   const modelsToTry = ['gemini-3.5-flash', 'gemini-3.5-flash-lite'];
@@ -69,7 +62,7 @@ export async function generateActivityWithAI(params: GenerationParams): Promise<
     }
   }
 
-  // If all Gemini models fail or rate limit occurs, use the pedagogical generator
+  // Fallback to built-in pedagogical generator
   console.info('Falling back to built-in pedagogical template generator.');
   return generateTemplateActivity(params);
 }

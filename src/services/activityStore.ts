@@ -3,7 +3,6 @@ import { Activity, ActivityType, SchoolClass, UsageStats } from '../types/activi
 const ACTIVITIES_KEY = 'educreator.activities.v1';
 const USAGE_KEY = 'educreator.usage.v1';
 const CLASSES_KEY = 'educreator.classes.v1';
-const API_KEY_STORAGE = 'educreator.apikey.v1';
 const USER_KEY = 'educreator.user.v1';
 
 export const activityLabels: Record<ActivityType, string> = {
@@ -198,21 +197,7 @@ export function deleteClass(id: string): void {
   localStorage.setItem(CLASSES_KEY, JSON.stringify(classes));
 }
 
-// ==================== API KEY & AUTH ====================
-
-export function getStoredApiKey(): string {
-  if (typeof window === 'undefined') return '';
-  return localStorage.getItem(API_KEY_STORAGE) || '';
-}
-
-export function setStoredApiKey(key: string): void {
-  if (typeof window === 'undefined') return;
-  if (!key) {
-    localStorage.removeItem(API_KEY_STORAGE);
-  } else {
-    localStorage.setItem(API_KEY_STORAGE, key.trim());
-  }
-}
+// ==================== AUTH & USER PROFILE ====================
 
 export interface UserProfile {
   email: string;

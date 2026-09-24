@@ -9,10 +9,8 @@ import {
   LogOut,
   Menu,
   X,
-  Key,
 } from 'lucide-react';
 import { getCurrentUser, UserProfile } from '../../services/activityStore';
-import { ApiKeyModal } from '../common/ApiKeyModal';
 
 interface AppShellProps {
   currentPath: string;
@@ -31,7 +29,6 @@ export const AppShell: React.FC<AppShellProps> = ({
 }) => {
   const [user, setUser] = useState<UserProfile>(getCurrentUser());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false);
   const [localSearch, setLocalSearch] = useState(searchQuery);
 
   useEffect(() => {
@@ -110,7 +107,7 @@ export const AppShell: React.FC<AppShellProps> = ({
             })}
           </nav>
 
-          {/* Bottom Area (Search, API Key, User Profile) */}
+          {/* Bottom Area (Search & User Profile) */}
           <div className="mt-auto space-y-4 border-t border-border pt-6">
             {/* Quick Search */}
             <form onSubmit={handleSearchSubmit} className="relative">
@@ -126,20 +123,6 @@ export const AppShell: React.FC<AppShellProps> = ({
                 className="w-full rounded-lg border border-border bg-card py-2 pl-9 pr-3 text-xs placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
               />
             </form>
-
-            {/* API Key settings trigger */}
-            <button
-              onClick={() => setApiKeyModalOpen(true)}
-              className="flex w-full items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-1.5 text-xs text-muted-foreground transition hover:bg-muted hover:text-foreground"
-            >
-              <span className="flex items-center gap-2">
-                <Key className="size-3.5 text-brand" />
-                <span>Chave Gemini AI</span>
-              </span>
-              <span className="rounded bg-brand/10 px-1.5 py-0.5 text-[10px] font-bold text-brand">
-                Configurar
-              </span>
-            </button>
 
             {/* User Profile */}
             <div className="flex items-center gap-3 px-1 pt-2">
@@ -214,16 +197,6 @@ export const AppShell: React.FC<AppShellProps> = ({
           </nav>
 
           <div className="mt-auto space-y-3 pt-6 border-t border-border">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setApiKeyModalOpen(true);
-              }}
-              className="flex w-full items-center gap-2 rounded-lg border border-border p-3 text-sm text-foreground"
-            >
-              <Key className="size-4 text-brand" />
-              <span>Configurar Chave Gemini AI</span>
-            </button>
             <div className="flex items-center justify-between pt-2">
               <span className="text-xs text-muted-foreground">{user.email}</span>
               <button
@@ -241,9 +214,6 @@ export const AppShell: React.FC<AppShellProps> = ({
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>
-
-      {/* API KEY CONFIG MODAL */}
-      <ApiKeyModal isOpen={apiKeyModalOpen} onClose={() => setApiKeyModalOpen(false)} />
     </div>
   );
 };
