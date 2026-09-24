@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #fafaf9;
+    color: #18181b;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* 3D Flip Card Effect for Flashcards */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* School exam lined area for discursive questions */
+.ruled-lines {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #e4e4e7 28px
+  );
+  line-height: 28px;
+}
+
+/* Print Optimization */
+@media print {
+  @page {
+    margin: 1.2cm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+  }
+
+  /* Hide UI elements during print */
+  aside,
+  header.nav-header,
+  .print\\:hidden,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Make containers full width and flat */
+  main,
+  article,
+  .print\\:shadow-none {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure text is dark and crisp */
+  h1, h2, h3, p, span, li {
+    color: #000000 !important;
+  }
+
+  .ruled-lines {
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      #a1a1aa 28px
+    ) !important;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+}
