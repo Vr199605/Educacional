@@ -10,6 +10,9 @@ import { Auth } from './pages/Auth';
 import { getActivities, saveActivity } from './services/activityStore';
 import { generateTemplateActivity } from './services/templateGenerator';
 import { Activity, ActivityType } from './types/activity';
+import { ViewSwitcher, PlatformViewMode } from './components/learnsmart/ViewSwitcher';
+import { TeacherDashboard } from './components/learnsmart/teacher/TeacherDashboard';
+import { StudentView } from './components/learnsmart/student/StudentView';
 
 export const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -17,6 +20,14 @@ export const App: React.FC = () => {
   });
   const [navParams, setNavParams] = useState<Record<string, any>>({});
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Switcher Global: 'educreator' (Criação BNCC) | 'teacher' (LearnSmart Dashboard & Agenda) | 'student' (Aluno Gamificado)
+  const [viewMode, setViewMode] = useState<PlatformViewMode>(() => {
+    const p = window.location.pathname;
+    if (p === '/professor' || p === '/learnsmart') return 'teacher';
+    if (p === '/aluno' || p === '/gamificado') return 'student';
+    return 'educreator';
+  });
 
   // Pre-populate sample activities on very first launch so the library isn't completely empty
   useEffect(() => {
@@ -105,7 +116,11 @@ export const App: React.FC = () => {
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname || '/');
+      const path = window.location.pathname || '/';
+      setCurrentPath(path);
+      if (path === '/professor' || path === '/learnsmart') setViewMode('teacher');
+      else if (path === '/aluno' || path === '/gamificado') setViewMode('student');
+      else setViewMode('educreator');
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -118,8 +133,22 @@ export const App: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  // Determine current route
-  const renderContent = () => {
+  const handleModeChange = (mode: PlatformViewMode) => {
+    setViewMode(mode);
+    if (mode === 'teacher') {
+      window.history.pushState({}, '', '/professor');
+    } else if (mode === 'student') {
+      window.history.pushState({}, '', '/aluno');
+    } else {
+      window.history.pushState({}, '', currentPath.startsWith('/professor') || currentPath.startsWith('/aluno') ? '/' : currentPath);
+      if (currentPath.startsWith('/professor') || currentPath.startsWith('/aluno')) {
+        setCurrentPath('/');
+      }
+    }
+  };
+
+  // Determine current route for EduCreator
+  const renderEduCreatorContent = () => {
     if (currentPath === '/auth') {
       return <Auth onNavigate={handleNavigate} />;
     }
@@ -161,14 +190,34 @@ export const App: React.FC = () => {
   };
 
   return (
-    <AppShell
-      currentPath={currentPath}
-      onNavigate={handleNavigate}
-      searchQuery={searchQuery}
-      onSearchChange={setSearchQuery}
-    >
-      {renderContent()}
-    </AppShell>
+    <>
+      {/* Global View Switcher: Allows jumping seamlessly between EduCreator, Teacher LearnSmart and Student View */}
+      <ViewSwitcher
+        currentMode={viewMode}
+        onModeChange={handleModeChange}
+      />
+
+      {viewMode === 'teacher' ? (
+        <TeacherDashboard
+          onSwitchToEduCreator={() => handleModeChange('educreator')}
+          onLaunchStudentQuiz={() => handleModeChange('student')}
+        />
+      ) : viewMode === 'student' ? (
+        <StudentView
+          onSwitchToTeacher={() => handleModeChange('teacher')}
+          onSwitchToEduCreator={() => handleModeChange('educreator')}
+        />
+      ) : (
+        <AppShell
+          currentPath={currentPath}
+          onNavigate={handleNavigate}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        >
+          {renderEduCreatorContent()}
+        </AppShell>
+      )}
+    </>
   );
 };
 export default App;
