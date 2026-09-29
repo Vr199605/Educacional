@@ -21,8 +21,8 @@ export const TeacherHeader: React.FC<TeacherHeaderProps> = ({
   onExport,
 }) => {
   const tabs: { id: CentralTab; label: string }[] = [
-    { id: 'relatorios', label: 'Relatórios & Analytics' },
-    { id: 'planejamento', label: 'Planejamento de Aulas' },
+    { id: 'relatorios', label: 'Relatórios de Desempenho' },
+    { id: 'planejamento', label: 'Grade de Aulas' },
     { id: 'conteudos', label: 'Conteúdos Didáticos' },
   ];
 

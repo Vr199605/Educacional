@@ -21,21 +21,21 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
   }[] = [
     {
       id: 'educreator',
-      label: 'Criador BNCC (EduCreator)',
-      shortLabel: 'Criador IA',
+      label: 'Visão Atual (Padrão)',
+      shortLabel: 'Padrão',
       icone: '🎓',
       color: 'bg-emerald-600 text-white',
     },
     {
       id: 'teacher',
-      label: 'Painel Professor (LearnSmart)',
+      label: 'Painel do Professor (LearnSmart)',
       shortLabel: 'Professor',
       icone: '👨‍🏫',
       color: 'bg-indigo-600 text-white',
     },
     {
       id: 'student',
-      label: 'Visão do Aluno (Gamificado)',
+      label: 'Portal do Aluno (Gamificado)',
       shortLabel: 'Aluno',
       icone: '🎒',
       color: 'bg-amber-500 text-amber-950 font-black',

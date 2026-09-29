@@ -36,10 +36,10 @@ export const TeacherSidebar: React.FC<TeacherSidebarProps> = ({
   const menuItems: { id: TeacherNavTab; label: string; icon: React.FC<{ className?: string }> }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'alunos', label: 'Alunos / Turmas', icon: Users },
-    { id: 'calendario', label: 'Calendário & Planejamento', icon: CalendarDays },
-    { id: 'tarefas', label: 'Tarefas & Avaliações', icon: CheckSquare },
+    { id: 'calendario', label: 'Planejamento', icon: CalendarDays },
+    { id: 'tarefas', label: 'Tarefas', icon: CheckSquare },
+    { id: 'estatisticas', label: 'Relatórios', icon: TrendingUp },
     { id: 'compartilhados', label: 'Compartilhados', icon: Share2 },
-    { id: 'estatisticas', label: 'Estatísticas', icon: TrendingUp },
     { id: 'mensagens', label: 'Mensagens', icon: MessageSquare },
     { id: 'configuracoes', label: 'Configurações', icon: Settings },
   ];
