@@ -4,7 +4,7 @@ import { Search, HelpCircle, Download, Plus, Bell } from 'lucide-react';
 export type CentralTab = 'relatorios' | 'planejamento' | 'conteudos';
 
 interface TeacherHeaderProps {
-  activeTab: CentralTab;
+  activeTab: CentralTab | null;
   onTabChange: (tab: CentralTab) => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
